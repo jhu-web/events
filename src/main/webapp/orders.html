@@ -1,0 +1,42 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<HTML>
+<HEAD>
+<TITLE>Orders</TITLE>
+<LINK REL=STYLESHEET
+      HREF="events-styles.css"
+      TYPE="text/css">
+</HEAD>
+
+<BODY>
+<TABLE BORDER=5 ALIGN="CENTER">
+  <TR><TH CLASS="TITLE">Orders
+</TABLE>
+<P>
+Choose a valuable item below. 
+<P>
+Select "Reserve Order" to hold the order for 30 days. Due to
+unprecedented demand, you can only reserve a single item: 
+selecting another item will replace the previous choice.
+<P>
+Select "Purchase Item" to finalize your purchase. After 
+finalizing a purchase, you can reserve a new item.
+<FORM ACTION="HandleOrders">
+<DL>
+  <DT><B>Item:</B>
+  <DD><INPUT TYPE="RADIO" NAME="itemName" VALUE="yacht">Yacht
+  <DD><INPUT TYPE="RADIO" NAME="itemName" VALUE="chalet">Chalet
+  <DD><INPUT TYPE="RADIO" NAME="itemName" VALUE="car">Lamborghini
+  <DD><INPUT TYPE="RADIO" NAME="itemName" VALUE="msajsp" CHECKED>
+      <I>More Servlets and JavaServer Pages</I>
+  <DD><INPUT TYPE="RADIO" NAME="itemName" VALUE="csajsp">
+      <I>Core Servlets and JavaServer Pages</I>
+</DL>
+<CENTER>
+<INPUT TYPE="SUBMIT" NAME="order" VALUE="Reserve Order">
+<INPUT TYPE="SUBMIT" NAME="cancel" VALUE="Cancel Order">
+<INPUT TYPE="SUBMIT" NAME="purchase" VALUE="Purchase Item">
+</CENTER>
+</FORM>
+
+</BODY>
+</HTML>

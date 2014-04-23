@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE taglib
+ PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN"
+ "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+
+<!-- a tag library descriptor -->
+
+<taglib>
+  <tlib-version>1.0</tlib-version>
+  <jsp-version>1.2</jsp-version>
+  <short-name>company-name-tags</short-name>
+  <description>
+    A tag library to print out the ever-changing current
+    and former company names (which are monitored by event
+    listeners). From More Servlets and JavaServer Pages,
+    http://www.moreservlets.com/.
+  </description>
+
+  <!-- Register the listener that sets up the 
+       initial company name. -->
+  <listener>
+    <listener-class>
+      coreservlets.listeners.InitialCompanyNameListener
+    </listener-class>
+  </listener>
+
+  <!-- Register the listener that monitors changes to
+       the company name.
+  --> 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.ChangedCompanyNameListener
+    </listener-class>
+  </listener>
+  
+  <!-- Define a tag that prints out the current name. -->
+  <tag>
+    <name>companyName</name>
+    <tag-class>coreservlets.tags.CompanyNameTag</tag-class>
+    <body-content>empty</body-content>
+    <description>The current company name</description>
+  </tag>      
+  
+  <!-- Define a tag that prints out the previous name. -->
+  <tag>
+    <name>formerCompanyName</name>
+    <tag-class>coreservlets.tags.FormerCompanyNameTag</tag-class>
+    <body-content>empty</body-content>
+    <description>The previous company name</description>
+    <attribute>
+      <name>fullDescription</name>
+      <required>false</required>
+    </attribute>
+  </tag> 
+</taglib>

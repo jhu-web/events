@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app version="3.0"
+         xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"> 
+  
+  <!-- Since the company name changes so frequently, 
+       supply it as a servlet context parameter instead
+       of embedding it into lots of different servlets and
+       JSP pages. The InitialCompanyNameListener will
+       read this value and store it in the servlet context. -->
+  <context-param>
+    <param-name>companyName</param-name>
+    <param-value>not-dot-com.com</param-value>
+  </context-param>
+  
+  <!-- Also store the previous company name. -->
+  <context-param>
+    <param-name>formerCompanyName</param-name>
+    <param-value>hot-dot-com.com</param-value>
+  </context-param>
+  
+  <!-- Declare the names of the session attributes that
+       are used to store items that customers are
+       purchasing. The daily special listener will
+       track changes to the values of these attributes. -->
+  <context-param>
+    <param-name>order-attribute-names</param-name>
+    <param-value>
+      orderedItem
+      purchasedItem
+    </param-value>
+  </context-param>
+  
+  <!-- The item names of the current daily specials. -->
+  <context-param>
+    <param-name>daily-special-item-names</param-name>
+    <param-value>
+      chalet
+      car
+    </param-value>
+  </context-param>
+  
+  <!-- Register the listener that sets up the 
+       initial company name. 
+   ** Commented out. Using @WebListener instead.
+  <listener>
+    <listener-class>
+      coreservlets.listeners.InitialCompanyNameListener
+    </listener-class>
+  </listener>
+  -->
+
+
+  <!-- Register the listener that monitors changes to
+       the company name.
+  --> 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.ChangedCompanyNameListener
+    </listener-class>
+  </listener>
+
+  <!-- Register the session counting event listener. 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.SessionCounter
+    </listener-class>
+  </listener>
+  -->
+
+  <!-- Register the yacht-watching event listener. 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.YachtWatcher
+    </listener-class>
+  </listener>
+  -->
+  
+  <!-- Register the listener that sets up the entries
+       that will be used to monitor orders for the daily
+       special. 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.DailySpecialRegistrar
+    </listener-class>
+  </listener>
+  -->
+  
+  <!-- Register the listener that counts orders for the daily
+       special. 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.DailySpecialWatcher
+    </listener-class>
+  </listener>
+  -->
+  
+  <!-- Register the listener that resets the order counts
+       when the names of the daily specials change. 
+  <listener>
+    <listener-class>
+      coreservlets.listeners.ChangedDailySpecialListener
+    </listener-class>
+  </listener>
+  -->
+  
+  <!-- Assign the name ChangeCompanyName to
+       coreservlets.ChangeCompanyName. -->
+  <servlet>
+    <servlet-name>ChangeCompanyName</servlet-name>
+    <servlet-class>coreservlets.ChangeCompanyName</servlet-class>
+  </servlet>
+  <!-- Assign the URL /admin/ChangeCompanyName to the
+       servlet that is named ChangeCompanyName. -->
+  <servlet-mapping>
+    <servlet-name>ChangeCompanyName</servlet-name>
+    <url-pattern>/admin/ChangeCompanyName</url-pattern>
+  </servlet-mapping>
+  
+  <!-- Protect everything within the "admin" directory.
+       Direct client access to this directory requires
+       authentication. -->
+  <security-constraint>
+    <web-resource-collection>
+      <web-resource-name>Admin</web-resource-name>
+      <url-pattern>/admin/*</url-pattern>
+    </web-resource-collection>
+    <auth-constraint>
+      <role-name>ceo</role-name>
+    </auth-constraint>
+  </security-constraint>
+  
+  <!-- Declare security roles. -->
+  <security-role>
+    <role-name>ceo</role-name>
+  </security-role>
+  
+  <!-- Tell the server to use form-based authentication. -->
+  <login-config>
+    <auth-method>FORM</auth-method>
+    <form-login-config>
+      <form-login-page>/admin/login.jsp</form-login-page>
+      <form-error-page>/admin/login-error.jsp</form-error-page>
+    </form-login-config>
+  </login-config>
+  
+  
+  <!-- Assign the name OrderHandlingServlet to
+       coreservlets.OrderHandlingServlet. 
+  <servlet>
+    <servlet-name>OrderHandlingServlet</servlet-name>
+    <servlet-class>
+      coreservlets.OrderHandlingServlet
+    </servlet-class>
+  </servlet>
+  -->
+  
+  <!-- Assign the name ChangeDailySpecial to
+       coreservlets.ChangeDailySpecial. 
+  <servlet>
+    <servlet-name>ChangeDailySpecial</servlet-name>
+    <servlet-class>
+      coreservlets.ChangeDailySpecial
+    </servlet-class>
+  </servlet>
+  -->
+  
+  
+  <!-- Assign the URL /HandleOrders to the
+       servlet that is named OrderHandlingServlet. 
+  
+  <servlet-mapping>
+    <servlet-name>OrderHandlingServlet</servlet-name>
+    <url-pattern>/HandleOrders</url-pattern>
+  </servlet-mapping>
+  -->
+  
+  <!-- Assign the URL /admin/ChangeDailySpecial to the
+       servlet that is named ChangeDailySpecial. 
+  
+  <servlet-mapping>
+    <servlet-name>ChangeDailySpecial</servlet-name>
+    <url-pattern>/admin/ChangeDailySpecial</url-pattern>
+  </servlet-mapping>
+  -->
+  
+  <!-- Set the default session timeout to two minutes. 
+  <session-config>
+    <session-timeout>2</session-timeout>
+  </session-config>
+  -->
+  
+  <!-- If URL gives a directory but no filename, try index.jsp
+       first and index.html second. If neither is found,
+       the result is server specific (e.g., a directory 
+       listing).  Order of elements in web.xml matters. 
+       welcome-file-list needs to come after servlet but
+       before error-page.
+  -->
+  <welcome-file-list>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>index.html</welcome-file>
+  </welcome-file-list>
+
+  <!-- Register the company-name tag library. 
+  <jsp-config>
+    <taglib>
+      <taglib-uri>
+        /company-name-taglib.tld
+      </taglib-uri>
+      <taglib-location>
+        /WEB-INF/company-name-taglib.tld
+      </taglib-location>
+    </taglib>
+  </jsp-config>
+  -->
+  
+</web-app>
